@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  
+}
+
+.App {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  color: #43a047;
+  height: 100vh;
+  max-width: 100%;
+  
+}
+
+h1 {
+  margin-bottom: 0;
+}

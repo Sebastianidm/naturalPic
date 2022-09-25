@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles.css";
+import MyContext from "./Context";
 
-function App() {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./views/Home";
+import Favoritos from "./views/Favoritos";
+import { useEffect, useState } from "react";
+
+export default function App() {
+  const endpoint = "/fotos.json";
+  const [api , setApi] = useState([])
+
+  const getFotos = async () => {
+    const res = await fetch(endpoint);
+    let data = await res.json();
+    let datosNecesarios = data.photos.map((e) => ({
+      id: e.id,
+      src: e.src.tiny,
+      desc: e.alt,
+      favorito: false
+
+    }));
+    setApi(datosNecesarios);
+  
+    
+}
+
+useEffect(() => {
+  getFotos();
+}, []);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MyContext.Provider value={{api , setApi}}>
+      <BrowserRouter>
+        <Navbar />
+        
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/favoritos" element={<Favoritos />} />
+        </Routes>
+        
+      </BrowserRouter>
+      </MyContext.Provider>
     </div>
   );
 }
-
-export default App;
